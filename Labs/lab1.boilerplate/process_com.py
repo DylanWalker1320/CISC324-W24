@@ -33,7 +33,6 @@ def main(n = None):
 
     # Create a child process
     pid = os.fork()
-    print("pid=", pid)
 
     # If the fork failed
     if pid < 0:
@@ -41,15 +40,24 @@ def main(n = None):
         return
 
     if pid != 0:  # Parent process
-        Total += A(x)
-    else:  # Child process
         Total += B(x)
-        os._exit(0)  # Ensure the child process terminates here
-
+        child = os.wait() #(pid, exit)
+        Total += child[1] >> 8
+    else:  # Child process
+        Total += A(x)
+        os._exit(Total)  # Ensure the child process terminates here
+    
     # If this is the parent process, print the total summation
     if pid != 0:
-        print(f"The total is: {Total}")
+        result = Total == n * (n + 1) / 2
+        print(f"N = {n}. The total is: {Total}. The real value is {n * (n + 1) / 2}. This result is {result}")
+        return result
 
 if __name__ == "__main__":
-    n = 1
+
+    n = 10
     main(n)
+
+    # Uncomment this to have it iterate through all valid n values, stopping once it reaches an incorrect value.
+    # while main(n):
+    #     n += 1
