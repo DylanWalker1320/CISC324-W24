@@ -8,8 +8,14 @@ using namespace std;
 
 class FirstComeFirstServedScheduler : public CPUScheduler
 {
+private:
+    int quantum;
+    int avg_wait;
+    int avg_turnaround;
+    queue<Process> processes;
+
 public:
-    FirstComeFirstServedScheduler(queue<Process> processes, int quantum) {}
+    FirstComeFirstServedScheduler(const queue<Process>& pass_processes, int pass_quantum) {}
     void schedule() override;
     void calculateAverageWaitTime() override;
     void calculateAverageTurnAroundTime() override;

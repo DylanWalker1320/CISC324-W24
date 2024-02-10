@@ -1,3 +1,5 @@
+#ifndef PROCESS_H
+#define PROCESS_H
 
 struct Process
 {
@@ -10,3 +12,5 @@ struct Process
     Process(int id, int burstTime) : id(id), burstTime(burstTime) {}
     Process(int id, int burstTime, int arrivalTime) : id(id), burstTime(burstTime), arrivalTime(arrivalTime) {}
 };
+
+#endif // PROCESS_H
