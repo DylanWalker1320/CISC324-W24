@@ -9,7 +9,7 @@ using namespace std;
 class RoundRobinScheduler : public CPUScheduler
 {
 public:
-    RoundRobinScheduler(queue<Process> processes, int quantum) {}
+    RoundRobinScheduler(const queue<Process> &pass_processes, int pass_quantum) {}
     void schedule() override;
     void calculateAverageWaitTime() override;
     void calculateAverageTurnAroundTime() override;

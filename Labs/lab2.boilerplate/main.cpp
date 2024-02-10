@@ -15,10 +15,12 @@ queue<Process> generateProcesses(int numberOfProcesses)
     queue<Process> processes;
     for (int i = 0; i < numberOfProcesses; i++)
     {
-        processes.push(Process(i + 1, rand() % 10 + 1, rand() % 10));
+        Process p = Process(i + 1, rand() % 10 + 1, rand() % 10);
+        processes.push(p);
     }
     return processes;
 }
+
 int main()
 {
     CPUScheduler *scheduler;
@@ -26,7 +28,7 @@ int main()
     // Init processes array
     queue<Process> processes_tc1 = generateProcesses(5);
     queue<Process> processes_tc2 = generateProcesses(10);
-
+    
     cout << "##### TEST CASE #1 #####" << endl;
 
     cout << "##### First Come First Served Scheduling Algorithm: TEST CASE#1 #####" << endl;
@@ -41,6 +43,7 @@ int main()
 
     cout << "###############################################\n";
 
+    /*
     cout << "##### Round Robin Scheduling Algorithm: TEST CASE#1 #####" << endl;
     scheduler = new RoundRobinScheduler(processes_tc1, 2);
     // Run the scheduler
@@ -72,6 +75,6 @@ int main()
     // Display average wait time and average turnaround time
     scheduler->calculateAverageWaitTime();
     scheduler->calculateAverageTurnAroundTime();
-
+    */
     return 0;
 }
