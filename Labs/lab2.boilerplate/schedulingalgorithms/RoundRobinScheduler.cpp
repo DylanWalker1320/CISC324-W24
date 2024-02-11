@@ -8,7 +8,7 @@ RoundRobinScheduler::RoundRobinScheduler(const queue<Process>& pass_processes, i
 }
 
 void rrProcessInsertionSort(std::vector<Process>& arr) {
-    int n = arr.size();
+    size_t n = arr.size();
 
     for (int i = 1; i < n; ++i) {
         Process key = arr[i];
@@ -42,7 +42,7 @@ bool allFinished(std::queue<Process> ps) {
 void RoundRobinScheduler::schedule()
 {
     // --Sort the queue--
-    int size = processes.size();
+    size_t size = processes.size();
     vector<Process> temp;
     for (int i = 0; i < size; i++) {
         Process p = processes.front();
@@ -60,7 +60,7 @@ void RoundRobinScheduler::schedule()
     }
 
     // --Begin the algorithm--
-    int time = 0;
+    int time = processes.front().arrivalTime;
     
     while (!allFinished(processes)) {
         Process p = processes.front();

@@ -8,7 +8,7 @@ FirstComeFirstServedScheduler::FirstComeFirstServedScheduler(const queue<Process
 }
 
 void processInsertionSort(std::vector<Process>& arr) {
-    int n = arr.size();
+    size_t n = arr.size();
 
     for (int i = 1; i < n; ++i) {
         Process key = arr[i];
@@ -29,7 +29,7 @@ void FirstComeFirstServedScheduler::schedule()
     // Implementation of FCFS scheduling
 
     // Reorder the queue so its in order of arrival time.
-    int size = processes.size();
+    size_t size = processes.size();
     vector<Process> temp;
     for (int i = 0; i < size; i++) {
         Process p = processes.front();
@@ -47,11 +47,15 @@ void FirstComeFirstServedScheduler::schedule()
     int time = 0;
     for (int i = 0; i < size; i++) {
         Process p = processes.front();
-        //cout << "Processing pid: " << p.id << " - arrival time: " << p.arrivalTime << " burst time: " << p.burstTime << endl;
+
+        // Since FCFS works until completion of a process, we can make several simplifications for timings.
         p.remainingTime = 0;
         p.completionTime = time + p.burstTime;
         p.waitTime = time - p.arrivalTime;
+
         time += p.burstTime;
+
+        // Cycle through the queue
         processes.pop();
         processes.push(p);
     }
