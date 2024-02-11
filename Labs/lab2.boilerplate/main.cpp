@@ -43,7 +43,7 @@ int main()
 
     cout << "###############################################\n";
 
-    /*
+    
     cout << "##### Round Robin Scheduling Algorithm: TEST CASE#1 #####" << endl;
     scheduler = new RoundRobinScheduler(processes_tc1, 2);
     // Run the scheduler
@@ -66,15 +66,15 @@ int main()
     scheduler->calculateAverageTurnAroundTime();
 
     cout << "###############################################\n";
-
-    cout << "##### Round Robin Scheduling Algorithm: TEST CASE#1 #####" << endl;
+    cout << "##### Round Robin Scheduling Algorithm: TEST CASE#1 #####\n";
     scheduler = new RoundRobinScheduler(processes_tc2, 2);
+    
     // Run the scheduler
     scheduler->schedule();
-
+    
     // Display average wait time and average turnaround time
     scheduler->calculateAverageWaitTime();
     scheduler->calculateAverageTurnAroundTime();
-    */
+    
     return 0;
 }

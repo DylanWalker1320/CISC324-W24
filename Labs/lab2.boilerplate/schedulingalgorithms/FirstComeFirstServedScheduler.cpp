@@ -47,7 +47,7 @@ void FirstComeFirstServedScheduler::schedule()
     int time = 0;
     for (int i = 0; i < size; i++) {
         Process p = processes.front();
-        cout << "Processing pid: " << p.id << " - arrival time: " << p.arrivalTime << " burst time: " << p.burstTime << endl;
+        //cout << "Processing pid: " << p.id << " - arrival time: " << p.arrivalTime << " burst time: " << p.burstTime << endl;
         p.remainingTime = 0;
         p.completionTime = time + p.burstTime;
         p.waitTime = time - p.arrivalTime;
@@ -61,8 +61,8 @@ void FirstComeFirstServedScheduler::schedule()
 void FirstComeFirstServedScheduler::calculateAverageWaitTime()
 {
     // Implementation of calculating average wait time
-    int sum = 0;
-    int size = processes.size();
+    float sum = 0;
+    float size = static_cast<float>(processes.size()); // FLAG: if this dosent work check this 
 
     for (int i = 0; i < size; i++) {
         Process p = processes.front();
@@ -71,14 +71,14 @@ void FirstComeFirstServedScheduler::calculateAverageWaitTime()
         processes.push(p);
     }
 
-    cout << "Average Wait Time: " << sum << endl;
+    cout << "Average wait time: " << sum / size << endl;
 }
 
 void FirstComeFirstServedScheduler::calculateAverageTurnAroundTime()
 {
     // Implementation of calculating average turn around time
-    int sum = 0;
-    int size = processes.size();
+    float sum = 0;
+    float size = static_cast<float>(processes.size()); // Cast to a float for decimal values
 
     for (int i = 0; i < size; i++) {
         Process p = processes.front();
@@ -87,11 +87,5 @@ void FirstComeFirstServedScheduler::calculateAverageTurnAroundTime()
         processes.push(p);
     }
 
-    cout << "Average Turnaround Time: " << sum << endl;
+    cout << "Average turn around time: " << sum / size << endl;
 }
-
-struct CompareArrivalTime {
-    bool operator()(const Process& p1, const Process& p2) {
-        return p1.arrivalTime > p2.arrivalTime;
-    }
-};
