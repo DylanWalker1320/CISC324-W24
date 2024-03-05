@@ -13,12 +13,16 @@ class SharedBuffer:
     def __init__(self, size):
         # Internal shared buffer
         self.buffer = []
+        
         # Mutex to protect the buffer
         self.mutex = threading.Lock()
+        
         # Semaphores to signal when the buffer is not empty
         self.notEmpty = threading.Semaphore(0)
+        
         # Semaphores to signal when the buffer is not full
         self.notFull = threading.Semaphore(size)
+        
         # Flag to signal that production is done
         self.doneProducing = False
 
@@ -26,17 +30,7 @@ class SharedBuffer:
     Add a message to the buffer. If the buffer is full, the producer will wait.
     '''
 
-    # def add_message(self, message):
-    #     # TODO: wait if buffer is full
-    #     self.notFull.acquire()
-    #     self.mutex.acquire()
-
-    #     with self.mutex:
-    #         self.buffer.append(message)
-            
-    #     # TODO: signal that buffer is not empty
-    #     self.mutex.release()
-    #     self.notEmpty.release()
+ 
 
     def add_message(self, message):
         # Wait if buffer is full
@@ -57,7 +51,6 @@ class SharedBuffer:
         message = None
         # TODO: wait if buffer is empty
         self.notEmpty.acquire()
-        self.mutex.acquire()
 
         with self.mutex:
             # TODO: if production is done and buffer is empty, return None (check the buffer length)
@@ -69,8 +62,8 @@ class SharedBuffer:
                 return None
 
             message = self.buffer.pop(0)
-        # TODO: signal that buffer is not full
-        self.mutex.release()
+        
+        # Signal that buffer is not full
         self.notFull.release()
 
         return message
@@ -83,10 +76,12 @@ class SharedBuffer:
         with self.mutex:
             # Set the flag to signal that production is done
             self.doneProducing = True
-
+            print("Current Buffer: " + str(self.buffer))
             # Release semaphore to ensure all consumers can exit
-            for _ in range(len(self.notFull._value)):
-                self.notFull.release()
+            for _ in range(len(self.buffer)):
+                self.notEmpty.release()
+                # self.notEmpty.release()
+            if len(self.buffer) == 0:
                 self.notEmpty.release()
 
 
@@ -110,13 +105,17 @@ Producer and consumer functions. Each producer produces multiple messages and ea
 def producer(thread_id):
     # Each producer produces 5 messages
     for message_number in range(5):
-        message = f"Message {message_number} from Producer {thread_id}"
+        
+        message = f"Message {message_number} from Producer {thread_id}\n"
         buffer.add_message(message)
+        
         print(f"Producer {thread_id} produced: {message}")
         time.sleep(2)
+        
     # After the last producer finishes, signal that production is done. Note that 4 is the number of producers
     if thread_id == 4 - 1:
         buffer.mark_done_producing()
+
 
 
 '''
