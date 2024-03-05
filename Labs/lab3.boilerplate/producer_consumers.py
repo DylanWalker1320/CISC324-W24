@@ -28,10 +28,15 @@ class SharedBuffer:
 
     def add_message(self, message):
         # TODO: wait if buffer is full
+        self.notFull.acquire()
+        self.mutex.acquire()
 
         with self.mutex:
             self.buffer.append(message)
         # TODO: signal that buffer is not empty
+        self.mutex.release()
+        self.notEmpty.release()
+
 
     '''
     Read a message from the buffer. If the buffer is empty, the consumer will wait.
@@ -40,17 +45,22 @@ class SharedBuffer:
     def read_message(self):
         message = None
         # TODO: wait if buffer is empty
+        self.notEmpty.acquire()
+        self.mutex.acquire()
 
         with self.mutex:
             # TODO: if production is done and buffer is empty, return None (check the buffer length)
-            if len(self.buffer) == 0:
+            if len(self.buffer) == 0 and self.doneProducing:
                 # TODO: release the requried semaphore to avoid deadlock
+                self.notEmpty.release()
 
                 # Return None if production is done and buffer is empty
                 return None
 
             message = self.buffer.pop(0)
         # TODO: signal that buffer is not full
+        self.mutex.release()
+        self.notFull.release()
 
         return message
 
@@ -61,9 +71,12 @@ class SharedBuffer:
     def mark_done_producing(self):
         with self.mutex:
             # TODO: set the flag to signal that production is done
+            self.doneProducing = True
 
             # Release semaphore to ensure all consumers can exit
             # TODO: release the semaphore for each consumer (you may need to release it multiple times)
+            for _ in range(len(self.buffer)):
+                self.notFull.release()
 
             pass  # Remove this line when you implement the method
 
