@@ -116,7 +116,8 @@ def consumer(thread_id):
         message = buffer.read_message()
         if message is None:
             # TODO: break the loop if production is done and buffer is empty
-            pass  # Remove this line when you implement the method
+            if buffer.doneProducing and len(buffer.buffer) == 0:
+                break
         print(f"Consumer {thread_id} consumed: {message}")
         time.sleep(1)  # Simulate reading time
 
