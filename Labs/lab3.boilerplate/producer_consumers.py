@@ -76,7 +76,6 @@ class SharedBuffer:
         with self.mutex:
             # Set the flag to signal that production is done
             self.doneProducing = True
-            print("Current Buffer: " + str(self.buffer))
             # Release semaphore to ensure all consumers can exit
             for _ in range(len(self.buffer)):
                 self.notEmpty.release()
